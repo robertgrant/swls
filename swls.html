@@ -42,7 +42,7 @@
                 width:977px;
                 height:690px;
             }
-            svg {
+            svg#svgDoc {
                 overflow:hidden;
                 padding:10px;
                 width:350px;
@@ -51,12 +51,21 @@
                 left:380px;
                 top:240px;
             }
+            svg#svgInstruct {
+                overflow:hidden;
+                padding:10px;
+                width:350px;
+                height:350px;
+                position:absolute;
+                left:900px;
+                top:80px;
+            }
             
             text    {
                 fill:#f43b1d;
                 text-anchor:left;
                 font-size:12px;
-                font-family:sans-serif,Helvetica,Arial;
+                font-family:Helvetica;
                 font-weight:bold;
             }
             
@@ -72,10 +81,6 @@
             
             .iconSelected  {
                 fill:#f43b1d;
-            }
-            
-            .instruct {
-                float:right;
             }
             
             rect    {
@@ -102,7 +107,7 @@
                 .style("position:absolute; left:0px; top:60px;");
 
             //create svg element
-            var svgDoc=d3.select("div#mapDiv").append("svg").attr("viewBox","0 0 100 100");
+            var svgDoc=d3.select("div#mapDiv").append("svg").attr('id','svgDoc').attr("viewBox","0 0 100 100");
 
              //define an icon; store it in svg <defs> elements as a reusable component
             svgDoc.append("defs")
@@ -154,6 +159,17 @@
                         return yPadding+(whole*hBuffer);//apply the buffer and return the value
                     })
                     .classed("iconPlain",true);
+            
+            // add the instruct element
+            var svgIns = d3.select('body').append('svg').attr('id','svgInstruct').attr('width',300);
+            
+            // add initial text to instruction SVG block
+            svgIns.append("text")
+                .attr("id","txtInstruct")
+                .attr("x",xPadding)
+                .attr("y",yPadding)
+                .attr("dy",-3)
+                .text("Start by selecting a public health priority from the icons above");
  
             // add credits
             d3.select('body').append('p').attr('class','credits')
