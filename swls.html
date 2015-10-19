@@ -24,11 +24,11 @@
         <meta charset='utf-8'>
 	    <meta name='description' content='Interactive visualisation: return on investment in public health, South West London System'>
 	    <title>Return on investment in public health</title>
-	    <script type='text/javascript' src='http://d3js.org/d3.v3.min.js'></script>
-	    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/themes/smoothness/jquery-ui.css" />
-        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
-        <script src="http://cdn.jsdelivr.net/jquery.ui.touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+	    <script type='text/javascript' src='d3.v3.min.js'></script>
+	    <script src="jquery.min.js"></script>
+        <link rel="stylesheet" href="jquery-ui.css" />
+        <script src="jquery-ui.min.js"></script>
+        <script src="jquery.ui.touch-punch.min.js"></script>
         <style type="text/css">
 
             #sliderDiv  {
@@ -42,6 +42,13 @@
                 width:977px;
                 height:690px;
             }
+
+            svg#boroughs {
+              margin:10px;
+              height:80px;
+              width:700px;
+            }
+
             svg#svgDoc {
                 overflow:hidden;
                 padding:10px;
@@ -58,15 +65,33 @@
                 height:350px;
                 position:absolute;
                 left:900px;
-                top:80px;
+                top:120px;
             }
 
-            text    {
+            img#swlslogo {
+              position:absolute;
+              left:900px;
+              top:10px;
+            }
+
+            rect.borough {
+              fill:#f43b1d;
+              width:160px;
+              height:80px;
+            }
+
+            text#txtInstruct    {
                 fill:#f43b1d;
-                text-anchor:left;
                 font-size:12px;
                 font-family:Helvetica;
                 font-weight:bold;
+            }
+
+            text.boroughtext {
+              fill:white;
+              font-size:30px;
+              font-weight:bold;
+              font-family:'Helvetica';
             }
 
             p.credits {
@@ -83,25 +108,34 @@
                 fill:#f43b1d;
             }
 
-            rect    {
-                fill:rgba(100,100,100,100);
-            }
-
         </style>
 
     </head>
 
     <body>
+        <svg id='boroughs'>
+          <rect class='borough' id='croydonbutton' x='5px' rx='10' ry='10'/>
+          <rect class='borough' id='kingstonbutton' x='175px' rx='10' ry='10'/>
+          <rect class='borough' id='mertonbutton' x='345px' rx='10' ry='10'/>
+          <rect class='borough' id='suttonbutton' x='515px' rx='10' ry='10'/>
+          <text class='boroughtext' x='85px' y='50px' text-anchor='middle'>Croydon</text>
+          <text class='boroughtext' x='255px' y='50px' text-anchor='middle'>Kingston</text>
+          <text class='boroughtext' x='425px' y='50px' text-anchor='middle'>Merton</text>
+          <text class='boroughtext' x='595px' y='50px' text-anchor='middle'>Sutton</text>
+        </svg>
+        <img src='logo.gif' id='swlslogo'>
+        <div id='mapDiv'> </div>
+
 
         <script>
 
             var smokers=12;
 
             //placeholder div for jquery slider
-            d3.select("body").append("div").attr("id","sliderDiv");
+            //d3.select("body").append("div").attr("id","sliderDiv");
 
             //placeholder div for map and pictogram
-            d3.select("body").append("div").attr("id","mapDiv");
+            //d3.select("body").append("div").attr("id","mapDiv");
 
             // insert background image
             d3.select('div#mapDiv').append('img').attr('src',"croydon.png")
@@ -109,7 +143,9 @@
                 .style("position:absolute; left:0px; top:60px;");
 
             //create svg element
-            var svgDoc=d3.select("div#mapDiv").append("svg").attr('id','svgDoc').attr("viewBox","0 0 100 100");
+            var svgDoc=d3.select("div#mapDiv").append("svg")
+                .attr('id','svgDoc')
+                .attr("viewBox","0 0 100 100");
 
              //define an icon; store it in svg <defs> elements as a reusable component
             svgDoc.append("defs")
@@ -178,6 +214,7 @@
                 .attr("x",xPadding)
                 .attr("y",yPadding)
                 .attr("dy",-3)
+                .attr("text-anchor","left")
                 .text("Start by selecting a public health priority from the icons above");
 
             // add credits
