@@ -113,15 +113,22 @@
     </head>
 
     <body>
+
         <svg id='boroughs'>
-          <rect class='borough' id='croydonbutton' x='5px' rx='10' ry='10'/>
-          <rect class='borough' id='kingstonbutton' x='175px' rx='10' ry='10'/>
-          <rect class='borough' id='mertonbutton' x='345px' rx='10' ry='10'/>
-          <rect class='borough' id='suttonbutton' x='515px' rx='10' ry='10'/>
-          <text class='boroughtext' x='85px' y='50px' text-anchor='middle'>Croydon</text>
-          <text class='boroughtext' x='255px' y='50px' text-anchor='middle'>Kingston</text>
-          <text class='boroughtext' x='425px' y='50px' text-anchor='middle'>Merton</text>
-          <text class='boroughtext' x='595px' y='50px' text-anchor='middle'>Sutton</text>
+          <script>
+              function mapCr() { window.alert("Oh no we're in Croydon"); }
+              function mapKi() { window.alert("Oh no we're in Kingston"); }
+              function mapMe() { window.alert("Oh no we're in Merton"); }
+              function mapSu() { window.alert("Oh no we're in Sutton"); }
+          </script>
+          <rect class='borough' id='croydonbutton' x='5px' rx='10' ry='10' onclick='mapCr();'/>
+          <rect class='borough' id='kingstonbutton' x='175px' rx='10' ry='10' onclick='mapKi();'/>
+          <rect class='borough' id='mertonbutton' x='345px' rx='10' ry='10' onclick='mapMe();'/>
+          <rect class='borough' id='suttonbutton' x='515px' rx='10' ry='10' onclick='mapSu();'/>
+          <text class='boroughtext' x='85px' y='52px' text-anchor='middle' onclick='mapCr();'>Croydon</text>
+          <text class='boroughtext' x='255px' y='52px' text-anchor='middle' onclick='mapKi();'>Kingston</text>
+          <text class='boroughtext' x='425px' y='52px' text-anchor='middle' onclick='mapMe();'>Merton</text>
+          <text class='boroughtext' x='595px' y='52px' text-anchor='middle' onclick='mapSu();'>Sutton</text>
         </svg>
         <img src='logo.gif' id='swlslogo'>
         <div id='mapDiv'> </div>
