@@ -20,7 +20,7 @@
         <meta name="msapplication-TileColor" content="#ffffff">
         <meta name="msapplication-TileImage" content="icons/ms-icon-144x144.png">
         <meta name="theme-color" content="#ffffff">
-        
+
         <meta charset='utf-8'>
 	    <meta name='description' content='Interactive visualisation: return on investment in public health, South West London System'>
 	    <title>Return on investment in public health</title>
@@ -30,7 +30,7 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
         <script src="http://cdn.jsdelivr.net/jquery.ui.touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
         <style type="text/css">
-               
+
             #sliderDiv  {
                 margin:10px;
                 margin-top:30px;
@@ -60,7 +60,7 @@
                 left:900px;
                 top:80px;
             }
-            
+
             text    {
                 fill:#f43b1d;
                 text-anchor:left;
@@ -68,33 +68,35 @@
                 font-family:Helvetica;
                 font-weight:bold;
             }
-            
+
             p.credits {
                 font-family:Helvetica;
                 color:#650303;
             }
-            
+
             .iconPlain  {
                 stroke:#f3850c;
                 fill:white;
             }
-            
+
             .iconSelected  {
                 fill:#f43b1d;
             }
-            
+
             rect    {
                 fill:rgba(100,100,100,100);
             }
-        
+
         </style>
- 
+
     </head>
- 
+
     <body>
- 
+
         <script>
-            
+
+            var smokers=12;
+
             //placeholder div for jquery slider
             d3.select("body").append("div").attr("id","sliderDiv");
 
@@ -115,22 +117,22 @@
                 .attr("id","iconCustom")
                 .append("path")
                         .attr("d","M3.5,2H2.7C3,1.8,3.3,1.5,3.3,1.1c0-0.6-0.4-1-1-1c-0.6,0-1,0.4-1,1c0,0.4,0.2,0.7,0.6,0.9H1.1C0.7,2,0.4,2.3,0.4,2.6v1.9c0,0.3,0.3,0.6,0.6,0.6h0.2c0,0,0,0.1,0,0.1v1.9c0,0.3,0.2,0.6,0.3,0.6h1.3c0.2,0,0.3-0.3,0.3-0.6V5.3c0,0,0-0.1,0-0.1h0.2c0.3,0,0.6-0.3,0.6-0.6V2.6C4.1,2.3,3.8,2,3.5,2z");
-            
+
             //specify the number of columns and rows for pictogram layout
             var numCols = 10;
             var numRows = 7;
-            
+
             //padding for the grid
             var xPadding = 10;
             var yPadding = 15;
-            
+
             //horizontal and vertical spacing between the icons
             var hBuffer = 9;
             var wBuffer = 8;
-            
+
             //generate a d3 range for the total number of required elements
             var myIndex=d3.range(numCols*numRows);
-            
+
             //text element to display number of icons highlighted
             svgDoc.append("text")
                 .attr("id","txtValue")
@@ -138,7 +140,7 @@
                 .attr("y",yPadding)
                 .attr("dy",-3)
                 .text("0");
- 
+
             //create group element and create an svg <use> element for each icon
             svgDoc.append("g")
                 .attr("id","pictoLayer")
@@ -158,11 +160,18 @@
                         var whole=Math.floor(d/numCols)//calculates the y position (row number)
                         return yPadding+(whole*hBuffer);//apply the buffer and return the value
                     })
-                    .classed("iconPlain",true);
-            
+                    .attr("class",function(d,i){
+                       if (d<smokers)  {
+                           return "iconSelected";
+                       }    else    {
+                           return "iconPlain";
+                       }
+                    });
+  //                  .classed("iconPlain",true);
+
             // add the instruct element
             var svgIns = d3.select('body').append('svg').attr('id','svgInstruct').attr('width',300);
-            
+
             // add initial text to instruction SVG block
             svgIns.append("text")
                 .attr("id","txtInstruct")
@@ -170,11 +179,11 @@
                 .attr("y",yPadding)
                 .attr("dy",-3)
                 .text("Start by selecting a public health priority from the icons above");
- 
+
             // add credits
             d3.select('body').append('p').attr('class','credits')
                 .text('Map © OpenStreetMap contributors — pictogram adapted from Alan Smith (bl.ocks.org/alansmithy)');
- 
+
             //create a jquery slider to control the pictogram
              $( "#sliderDiv" ).slider({
                   orientation: "horizontal",
@@ -192,7 +201,7 @@
                     });
                   }
              });
-            
+
         </script>
     </body>
 </html>
