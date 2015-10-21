@@ -97,6 +97,7 @@
             p.credits {
                 font-family:Helvetica;
                 color:#650303;
+                font-size:70%;
             }
 
             .iconPlain  {
@@ -114,35 +115,116 @@
 
     <body>
 
-        <svg id='boroughs'>
-          <script>
-              function mapCr() { window.alert("Oh no we're in Croydon"); }
-              function mapKi() { window.alert("Oh no we're in Kingston"); }
-              function mapMe() { window.alert("Oh no we're in Merton"); }
-              function mapSu() { window.alert("Oh no we're in Sutton"); }
-          </script>
-          <rect class='borough' id='croydonbutton' x='5px' rx='10' ry='10' onclick='mapCr();'/>
-          <rect class='borough' id='kingstonbutton' x='175px' rx='10' ry='10' onclick='mapKi();'/>
-          <rect class='borough' id='mertonbutton' x='345px' rx='10' ry='10' onclick='mapMe();'/>
-          <rect class='borough' id='suttonbutton' x='515px' rx='10' ry='10' onclick='mapSu();'/>
-          <text class='boroughtext' x='85px' y='52px' text-anchor='middle' onclick='mapCr();'>Croydon</text>
-          <text class='boroughtext' x='255px' y='52px' text-anchor='middle' onclick='mapKi();'>Kingston</text>
-          <text class='boroughtext' x='425px' y='52px' text-anchor='middle' onclick='mapMe();'>Merton</text>
-          <text class='boroughtext' x='595px' y='52px' text-anchor='middle' onclick='mapSu();'>Sutton</text>
-        </svg>
-        <img src='logo.gif' id='swlslogo'>
-        <div id='mapDiv'> </div>
-
-
         <script>
 
+            var smokersnum = [48,22,22,17];
+            var smokersdenom = [235,111,136,150];
             var smokers=12;
 
-            //placeholder div for jquery slider
-            //d3.select("body").append("div").attr("id","sliderDiv");
+            // insert borough buttons
+            var boroughsvg = d3.select('body').append('svg')
+                .attr('id','boroughs');
+            // add rect
+            boroughsvg.append('rect')
+                .attr({
+                    class:'borough',
+                    id:'croydonbutton',
+                    x:5,
+                    rx:10,
+                    ry:10
+                })
+                .on('click',function() {
+                  window.alert("Oh no we're in Croydon");
+                });
+            boroughsvg.append('rect')
+                .attr({
+                    class:'borough',
+                    id:'kingstonbutton',
+                    x:175,
+                    rx:10,
+                    ry:10
+                })
+                .on('click',function() {
+                  window.alert("Oh no we're in Kingston");
+                });
+            boroughsvg.append('rect')
+                .attr({
+                    class:'borough',
+                    id:'mertonbutton',
+                    x:345,
+                    rx:10,
+                    ry:10
+                })
+                .on('click',function() {
+                  window.alert("Oh no we're in Merton");
+                });
+            boroughsvg.append('rect')
+                .attr({
+                    class:'borough',
+                    id:'suttonbutton',
+                    x:515,
+                    rx:10,
+                    ry:10
+                })
+                .on('click',function() {
+                  window.alert("Oh no we're in sutton");
+                });
+            // add text
+            boroughsvg.append('text')
+                .attr({
+                    class:'boroughtext',
+                    x:85,
+                    y:52,
+                    'text-anchor':'middle'
+                })
+                .on('click',function() {
+                  window.alert("Oh no we're in Croydon");
+                })
+                .text('Croydon');
+            boroughsvg.append('text')
+                .attr({
+                    class:'boroughtext',
+                    x:255,
+                    y:52,
+                    'text-anchor':'middle'
+                })
+                .on('click',function() {
+                  window.alert("Oh no we're in Kingston");
+                })
+                .text('Kingston');
+            boroughsvg.append('text')
+                .attr({
+                    class:'boroughtext',
+                    x:425,
+                    y:52,
+                    'text-anchor':'middle'
+                })
+                .on('click',function() {
+                  window.alert("Oh no we're in Kingston");
+                })
+                .text('Merton');
+            boroughsvg.append('text')
+                .attr({
+                    class:'boroughtext',
+                    x:595,
+                    y:52,
+                    'text-anchor':'middle'
+                })
+                .on('click',function() {
+                  window.alert("Oh no we're in Kingston");
+                })
+                .text('Sutton');
 
-            //placeholder div for map and pictogram
-            //d3.select("body").append("div").attr("id","mapDiv");
+            // insert logo
+            d3.select('body').append('img')
+                .attr({
+                    src:'logo.gif',
+                    id:'swlslogo'
+                });
+
+            // insert map
+            d3.select('body').append('div')
+                .attr('id','mapDiv');
 
             // insert background image
             d3.select('div#mapDiv').append('img').attr('src',"croydon.png")
@@ -226,25 +308,9 @@
 
             // add credits
             d3.select('body').append('p').attr('class','credits')
-                .text('Map © OpenStreetMap contributors — pictogram adapted from Alan Smith (bl.ocks.org/alansmithy)');
-
-            //create a jquery slider to control the pictogram
-             $( "#sliderDiv" ).slider({
-                  orientation: "horizontal",
-                  min: 0,
-                  max: numCols*numRows,
-                  value: 0,
-                  slide: function( event, ui ) {
-                    d3.select("#txtValue").text(ui.value);
-                    d3.selectAll("use").attr("class",function(d,i){
-                       if (d<ui.value)  {
-                           return "iconSelected";
-                       }    else    {
-                           return "iconPlain";
-                       }
-                    });
-                  }
-             });
+                .text("Created by Robert Grant at Kingston University + St George's, University of London");
+            d3.select('body').append('p').attr('class','credits')
+                    .text("Map © OpenStreetMap contributors — pictogram adapted from Alan Smith (bl.ocks.org/alansmithy)");
 
         </script>
     </body>
