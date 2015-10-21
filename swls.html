@@ -117,6 +117,19 @@
 
         <script>
 
+            var crMap = function() {
+                window.alert("Oh no we're in Croydon");
+            }
+            var kiMap = function() {
+                window.alert("Oh no we're in Kingston");
+            }
+            var meMap = function() {
+                window.alert("Oh no we're in Merton");
+            }
+            var suMap = function() {
+                window.alert("Oh no we're in Sutton");
+            }
+
             var smokersnum = [48,22,22,17];
             var smokersdenom = [235,111,136,150];
             var smokers=12;
@@ -133,9 +146,7 @@
                     rx:10,
                     ry:10
                 })
-                .on('click',function() {
-                  window.alert("Oh no we're in Croydon");
-                });
+                .on('click',crMap);
             boroughsvg.append('rect')
                 .attr({
                     class:'borough',
@@ -144,9 +155,7 @@
                     rx:10,
                     ry:10
                 })
-                .on('click',function() {
-                  window.alert("Oh no we're in Kingston");
-                });
+                .on('click',kiMap);
             boroughsvg.append('rect')
                 .attr({
                     class:'borough',
@@ -155,9 +164,7 @@
                     rx:10,
                     ry:10
                 })
-                .on('click',function() {
-                  window.alert("Oh no we're in Merton");
-                });
+                .on('click',meMap);
             boroughsvg.append('rect')
                 .attr({
                     class:'borough',
@@ -166,9 +173,7 @@
                     rx:10,
                     ry:10
                 })
-                .on('click',function() {
-                  window.alert("Oh no we're in sutton");
-                });
+                .on('click',suMap);
             // add text
             boroughsvg.append('text')
                 .attr({
@@ -177,9 +182,7 @@
                     y:52,
                     'text-anchor':'middle'
                 })
-                .on('click',function() {
-                  window.alert("Oh no we're in Croydon");
-                })
+                .on('click',crMap)
                 .text('Croydon');
             boroughsvg.append('text')
                 .attr({
@@ -188,9 +191,7 @@
                     y:52,
                     'text-anchor':'middle'
                 })
-                .on('click',function() {
-                  window.alert("Oh no we're in Kingston");
-                })
+                .on('click',kiMap)
                 .text('Kingston');
             boroughsvg.append('text')
                 .attr({
@@ -199,9 +200,7 @@
                     y:52,
                     'text-anchor':'middle'
                 })
-                .on('click',function() {
-                  window.alert("Oh no we're in Kingston");
-                })
+                .on('click',meMap)
                 .text('Merton');
             boroughsvg.append('text')
                 .attr({
@@ -210,9 +209,7 @@
                     y:52,
                     'text-anchor':'middle'
                 })
-                .on('click',function() {
-                  window.alert("Oh no we're in Kingston");
-                })
+                .on('click',suMap)
                 .text('Sutton');
 
             // insert logo
@@ -257,14 +254,6 @@
 
             //generate a d3 range for the total number of required elements
             var myIndex=d3.range(numCols*numRows);
-
-            //text element to display number of icons highlighted
-            svgDoc.append("text")
-                .attr("id","txtValue")
-                .attr("x",xPadding)
-                .attr("y",yPadding)
-                .attr("dy",-3)
-                .text("0");
 
             //create group element and create an svg <use> element for each icon
             svgDoc.append("g")
