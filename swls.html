@@ -75,6 +75,11 @@
             }
 
             rect.borough {
+              fill:#f3850c;
+              width:160px;
+              height:80px;
+            }
+            rect.thisborough {
               fill:#f43b1d;
               width:160px;
               height:80px;
@@ -133,15 +138,32 @@
             var denom=0
 
             var crMap = function() {
+                d3.select('#croydonbutton').attr('class','thisborough');
+                d3.select('#kingstonbutton').attr('class','borough');
+                d3.select('#mertonbutton').attr('class','borough');
+                d3.select('#suttonbutton').attr('class','borough');
+
                 render(0,1);
             }
             var kiMap = function() {
+                d3.select('#croydonbutton').attr('class','borough');
+                d3.select('#kingstonbutton').attr('class','thisborough');
+                d3.select('#mertonbutton').attr('class','borough');
+                d3.select('#suttonbutton').attr('class','borough');
                 render(1,1);
             }
             var meMap = function() {
+                d3.select('#croydonbutton').attr('class','borough');
+                d3.select('#kingstonbutton').attr('class','borough');
+                d3.select('#mertonbutton').attr('class','thisborough');
+                d3.select('#suttonbutton').attr('class','borough');
                 render(2,1);
             }
             var suMap = function() {
+                d3.select('#croydonbutton').attr('class','borough');
+                d3.select('#kingstonbutton').attr('class','borough');
+                d3.select('#mertonbutton').attr('class','borough');
+                d3.select('#suttonbutton').attr('class','thisborough');
                 render(3,1);
             }
 
@@ -348,7 +370,14 @@
                     .attr("y",40)
                     .attr("dy",-3)
                     .attr("text-anchor","left")
-                    .text("Out of "+denom+",000 residents over 16, "+num+",000 are smokers.");
+                    .text("There are "+num+",000 smokers,");
+                svgIns.append("text")
+                    .attr("id","txtStats")
+                    .attr("x",10)
+                    .attr("y",54)
+                    .attr("dy",-3)
+                    .attr("text-anchor","left")
+                    .text("out of "+denom+",000 residents over sixteen.");
 
 
           }
