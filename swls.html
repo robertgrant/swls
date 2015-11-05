@@ -52,11 +52,11 @@
             svg#svgDoc {
                 overflow:hidden;
                 padding:10px;
-                width:350px;
-                height:350px;
+                width:600px;
+                height:650px;
                 position:absolute;
-                left:380px;
-                top:240px;
+                left:300px;
+                top:110px;
             }
             svg#svgInstruct {
                 overflow:hidden;
@@ -85,6 +85,11 @@
                 font-size:12px;
                 font-family:Helvetica;
                 font-weight:bold;
+            }
+
+            text#txtStats    {
+                font-size:12px;
+                font-family:Helvetica;
             }
 
             text.boroughtext {
@@ -117,22 +122,34 @@
 
         <script>
 
+            /* ##############################################
+               #########  functions and definitions  ########
+               ############################################## */
+
+            // problems in the order: smoking, overweight, alcohol, inactivity
+            var allnum = [[48,22,22,17],[182,75,95,73],[20,11,12,12],[164,86,97,102]];
+            var alldenom = [[235,111,136,150],[293,136,163,153],[294,137,162,154],[293,137,162,154]];
+            var num=0;
+            var denom=0
+
             var crMap = function() {
-                window.alert("Oh no we're in Croydon");
+                render(0,1);
             }
             var kiMap = function() {
-                window.alert("Oh no we're in Kingston");
+                render(1,1);
             }
             var meMap = function() {
-                window.alert("Oh no we're in Merton");
+                render(2,1);
             }
             var suMap = function() {
-                window.alert("Oh no we're in Sutton");
+                render(3,1);
             }
 
-            var smokersnum = [48,22,22,17];
-            var smokersdenom = [235,111,136,150];
-            var smokers=12;
+// we will have similar functions on the problem icons
+
+            /* ############################################
+               #########  draw the initial content ########
+               ############################################ */
 
             // insert borough buttons
             var boroughsvg = d3.select('body').append('svg')
@@ -228,10 +245,39 @@
                 .attr('width',900).attr('height',650)
                 .style("position:absolute; left:0px; top:60px;");
 
-            //create svg element
+            // add the instruct element
+            var svgIns = d3.select('body').append('svg').attr('id','svgInstruct').attr('width',300);
+
+            // add initial text to instruction SVG block
+            svgIns.append("text")
+                .attr("id","txtInstruct")
+                .attr("x",10)
+                .attr("y",15)
+                .attr("dy",-3)
+                .attr("text-anchor","left")
+                .text("Start by selecting a public health priority from the icons above");
+            svgIns.append("text")
+                .attr("id","txtStats")
+
             var svgDoc=d3.select("div#mapDiv").append("svg")
                 .attr('id','svgDoc')
-                .attr("viewBox","0 0 100 100");
+                .attr("viewBox","0 0 200 200");
+
+
+
+
+            /* ########################################################
+               #########  function to draw interactive content ########
+               ######################################################## */
+// add Bostock join
+
+        var render = function(pickborough,pickproblem) {
+
+            d3.select('svg#svgDoc').remove();
+
+            var svgDoc=d3.select("div#mapDiv").append("svg")
+                .attr('id','svgDoc')
+                .attr("viewBox","0 0 200 200");
 
              //define an icon; store it in svg <defs> elements as a reusable component
             svgDoc.append("defs")
@@ -240,20 +286,30 @@
                 .append("path")
                         .attr("d","M3.5,2H2.7C3,1.8,3.3,1.5,3.3,1.1c0-0.6-0.4-1-1-1c-0.6,0-1,0.4-1,1c0,0.4,0.2,0.7,0.6,0.9H1.1C0.7,2,0.4,2.3,0.4,2.6v1.9c0,0.3,0.3,0.6,0.6,0.6h0.2c0,0,0,0.1,0,0.1v1.9c0,0.3,0.2,0.6,0.3,0.6h1.3c0.2,0,0.3-0.3,0.3-0.6V5.3c0,0,0-0.1,0-0.1h0.2c0.3,0,0.6-0.3,0.6-0.6V2.6C4.1,2.3,3.8,2,3.5,2z");
 
+            // get numerator and denominator
+            num = allnum[pickproblem][pickborough];
+            denom = alldenom[pickproblem][pickborough];
+            //create svg element
             //specify the number of columns and rows for pictogram layout
+
+            var numCols = denom>200 ? 20: 10;
+            var numRows = 1+Math.floor(denom/numCols);
+            var myIndex=d3.range(denom);
+            /*
             var numCols = 10;
             var numRows = 7;
+            */
 
             //padding for the grid
             var xPadding = 10;
-            var yPadding = 15;
+            var yPadding = denom>200 ? 3 : 8;
 
             //horizontal and vertical spacing between the icons
             var hBuffer = 9;
             var wBuffer = 8;
 
             //generate a d3 range for the total number of required elements
-            var myIndex=d3.range(numCols*numRows);
+            var myIndex=d3.range(denom);
 
             //create group element and create an svg <use> element for each icon
             svgDoc.append("g")
@@ -272,28 +328,31 @@
                     })
                       .attr("y",function(d) {
                         var whole=Math.floor(d/numCols)//calculates the y position (row number)
-                        return yPadding+(whole*hBuffer);//apply the buffer and return the value
+                        return yPadding+(whole*hBuffer);
                     })
                     .attr("class",function(d,i){
-                       if (d<smokers)  {
+                       if (d<num)  {
                            return "iconSelected";
                        }    else    {
                            return "iconPlain";
                        }
                     });
+                //.exit()
+                //.remove();
   //                  .classed("iconPlain",true);
 
-            // add the instruct element
-            var svgIns = d3.select('body').append('svg').attr('id','svgInstruct').attr('width',300);
+                d3.selectAll('#txtStats').remove();
+                svgIns.append("text")
+                    .attr("id","txtStats")
+                    .attr("x",10)
+                    .attr("y",40)
+                    .attr("dy",-3)
+                    .attr("text-anchor","left")
+                    .text("Out of "+denom+",000 residents over 16, "+num+",000 are smokers.");
 
-            // add initial text to instruction SVG block
-            svgIns.append("text")
-                .attr("id","txtInstruct")
-                .attr("x",xPadding)
-                .attr("y",yPadding)
-                .attr("dy",-3)
-                .attr("text-anchor","left")
-                .text("Start by selecting a public health priority from the icons above");
+
+          }
+
 
             // add credits
             d3.select('body').append('p').attr('class','credits')
