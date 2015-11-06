@@ -1,3 +1,14 @@
+<!--
+comment on stats on a page before they go to DesignInc
+Public health can... In collaboration with the King's Fund
+RoI text
+Problem buttons  / icons
+Map moves
+Map faded and trimmed
+svg logo
+About...
+-->
+
 
 <!doctype html>
 <html>
@@ -141,7 +152,7 @@
                 d3.select('#croydonbutton').attr('class','thisborough');
                 d3.select('#kingstonbutton').attr('class','borough');
                 d3.select('#mertonbutton').attr('class','borough');
-                d3.select('#suttonbutton').attr('class','borough');
+                d3.select('#richmondbutton').attr('class','borough');
 
                 render(0,1);
             }
@@ -149,21 +160,21 @@
                 d3.select('#croydonbutton').attr('class','borough');
                 d3.select('#kingstonbutton').attr('class','thisborough');
                 d3.select('#mertonbutton').attr('class','borough');
-                d3.select('#suttonbutton').attr('class','borough');
+                d3.select('#richmondbutton').attr('class','borough');
                 render(1,1);
             }
             var meMap = function() {
                 d3.select('#croydonbutton').attr('class','borough');
                 d3.select('#kingstonbutton').attr('class','borough');
                 d3.select('#mertonbutton').attr('class','thisborough');
-                d3.select('#suttonbutton').attr('class','borough');
+                d3.select('#richmondbutton').attr('class','borough');
                 render(2,1);
             }
-            var suMap = function() {
+            var riMap = function() {
                 d3.select('#croydonbutton').attr('class','borough');
                 d3.select('#kingstonbutton').attr('class','borough');
                 d3.select('#mertonbutton').attr('class','borough');
-                d3.select('#suttonbutton').attr('class','thisborough');
+                d3.select('#richmondbutton').attr('class','thisborough');
                 render(3,1);
             }
 
@@ -207,12 +218,12 @@
             boroughsvg.append('rect')
                 .attr({
                     class:'borough',
-                    id:'suttonbutton',
+                    id:'richmondbutton',
                     x:515,
                     rx:10,
                     ry:10
                 })
-                .on('click',suMap);
+                .on('click',riMap);
             // add text
             boroughsvg.append('text')
                 .attr({
@@ -248,8 +259,8 @@
                     y:52,
                     'text-anchor':'middle'
                 })
-                .on('click',suMap)
-                .text('Sutton');
+                .on('click',riMap)
+                .text('Richmond');
 
             // insert logo
             d3.select('body').append('img')
