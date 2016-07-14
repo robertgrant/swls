@@ -11,7 +11,7 @@ About...
 <!doctype html>
 <html>
     <head>
-        <link rel="apple-touch-icon" sizes="57x57" href="swls-icons/apple-icon-57x57.png">
+    <!--    <link rel="apple-touch-icon" sizes="57x57" href="swls-icons/apple-icon-57x57.png">
         <link rel="apple-touch-icon" sizes="60x60" href="swls-icons/apple-icon-60x60.png">
         <link rel="apple-touch-icon" sizes="72x72" href="swls-icons/apple-icon-72x72.png">
         <link rel="apple-touch-icon" sizes="76x76" href="swls-icons/apple-icon-76x76.png">
@@ -28,44 +28,37 @@ About...
         <link rel="icon" type="image/x-icon" href="swls-icons/favicon.ico" />
         <meta name="msapplication-TileColor" content="#ffffff">
         <meta name="msapplication-TileImage" content="swls-icons/ms-icon-144x144.png">
-        <meta name="theme-color" content="#ffffff">
+        <meta name="theme-color" content="#ffffff"> -->
 
         <meta charset='utf-8'>
 	    <meta name='description' content='Interactive visualisation: return on investment in public health, South West London System'>
 	    <title>Return on investment in public health</title>
-	    <script type='text/javascript' src='d3.v3.min.js'></script>
+	    <!--<script type='text/javascript' src='https://d3js.org/d3.v3.min.js'></script>
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>-->
+      <script type='text/javascript' src='d3.v3.min.js'></script>
 	    <script src="jquery.min.js"></script>
-        <link rel="stylesheet" href="jquery-ui.css" />
+      <!--  <link rel="stylesheet" href="jquery-ui.css" />
         <script src="jquery-ui.min.js"></script>
-        <script src="jquery.ui.touch-punch.min.js"></script>
+        <script src="jquery.ui.touch-punch.min.js"></script> -->
         <style type="text/css">
-
-            #sliderDiv  {
-                margin:10px;
-                margin-top:30px;
-                height:15px;
-                width:350px;
-            }
             #mapDiv {
                 overflow:hidden;
                 width:977px;
                 height:690px;
             }
-
-            svg#boroughs {
+            svg#boroughs , svg#problems {
               margin:10px;
               height:80px;
               width:700px;
             }
-
             svg#svgDoc {
                 overflow:hidden;
                 padding:10px;
                 width:600px;
                 height:650px;
                 position:absolute;
-                left:300px;
-                top:110px;
+                left:350px;
+                top:290px;
             }
             svg#svgInstruct {
                 overflow:hidden;
@@ -73,57 +66,49 @@ About...
                 width:350px;
                 height:350px;
                 position:absolute;
-                left:900px;
+                left:720px;
                 top:120px;
             }
-
             img#swlslogo {
               position:absolute;
-              left:900px;
+              left:720px;
               top:10px;
             }
-
-            rect.borough {
+            rect.borough, rect.problem {
               fill:#f3850c;
               width:160px;
               height:80px;
             }
-            rect.thisborough {
+            rect.thisborough, rect.thisproblem {
               fill:#f43b1d;
               width:160px;
               height:80px;
             }
-
             text#txtInstruct    {
                 fill:#f43b1d;
                 font-size:12px;
                 font-family:Helvetica;
                 font-weight:bold;
             }
-
             text#txtStats    {
                 font-size:12px;
                 font-family:Helvetica;
             }
-
-            text.boroughtext {
+            text.buttontext {
               fill:white;
-              font-size:30px;
+              font-size:26px;
               font-weight:bold;
               font-family:'Helvetica';
             }
-
             p.credits {
                 font-family:Helvetica;
                 color:#650303;
                 font-size:70%;
             }
-
             .iconPlain  {
                 stroke:#f3850c;
                 fill:white;
             }
-
             .iconSelected  {
                 fill:#f43b1d;
             }
@@ -147,30 +132,75 @@ About...
             var allnum = [[48,22,22,17],[182,75,95,73],[20,11,12,12],[164,86,97,102]];
             var alldenom = [[235,111,136,150],[293,136,163,153],[294,137,162,154],[293,137,162,154]];
             var num=0;
-            var denom=0
+            var denom=0;
+            var thisnum = -1;
+            var thisdenom = -1;
 
             var crMap = function() {
                 d3.selectAll('rect.thisborough').attr('class','borough');
                 d3.select('#croydonbutton').attr('class','thisborough');
-                render(0,1);
+                thisdenom=0;
+                if(thisnum>-1 & thisdenom>-1) {
+                  render(thisdenom,thisnum);
+                }
             }
             var kiMap = function() {
                 d3.selectAll('rect.thisborough').attr('class','borough');
                 d3.select('#kingstonbutton').attr('class','thisborough');
-                render(1,1);
+                thisdenom=1;
+                if(thisnum>-1 & thisdenom>-1) {
+                  render(thisdenom,thisnum);
+                }
             }
             var meMap = function() {
                 d3.selectAll('rect.thisborough').attr('class','borough');
                 d3.select('#mertonbutton').attr('class','thisborough');
-                render(2,1);
+                thisdenom=2;
+                if(thisnum>-1 & thisdenom>-1) {
+                  render(thisdenom,thisnum);
+                }
             }
             var riMap = function() {
                 d3.selectAll('rect.thisborough').attr('class','borough');
                 d3.select('#richmondbutton').attr('class','thisborough');
-                render(3,1);
+                thisdenom=3;
+                if(thisnum>-1 & thisdenom>-1) {
+                  render(thisdenom,thisnum);
+                }
+            }
+            var smMap = function() {
+                d3.selectAll('rect.thisproblem').attr('class','problem');
+                d3.select('#smokingbutton').attr('class','thisproblem');
+                thisnum=0;
+                if(thisnum>-1 & thisdenom>-1) {
+                  render(thisdenom,thisnum);
+                }
+            }
+            var ovMap = function() {
+                d3.selectAll('rect.thisproblem').attr('class','problem');
+                d3.select('#overweightbutton').attr('class','thisproblem');
+                thisnum=1;
+                if(thisnum>-1 & thisdenom>-1) {
+                  render(thisdenom,thisnum);
+                }
+            }
+            var alMap = function() {
+                d3.selectAll('rect.thisproblem').attr('class','problem');
+                d3.select('#alcoholbutton').attr('class','thisproblem');
+                thisnum=2;
+                if(thisnum>-1 & thisdenom>-1) {
+                  render(thisdenom,thisnum);
+                }
+            }
+            var inMap = function() {
+                d3.selectAll('rect.thisproblem').attr('class','problem');
+                d3.select('#inactivitybutton').attr('class','thisproblem');
+                thisnum=3;
+                if(thisnum>-1 & thisdenom>-1) {
+                  render(thisdenom,thisnum);
+                }
             }
 
-// we will have similar functions on the problem icons
 
             /* ############################################
                #########  draw the initial content ########
@@ -219,7 +249,7 @@ About...
             // add text
             boroughsvg.append('text')
                 .attr({
-                    class:'boroughtext',
+                    class:'buttontext',
                     x:85,
                     y:52,
                     'text-anchor':'middle'
@@ -228,7 +258,7 @@ About...
                 .text('Croydon');
             boroughsvg.append('text')
                 .attr({
-                    class:'boroughtext',
+                    class:'buttontext',
                     x:255,
                     y:52,
                     'text-anchor':'middle'
@@ -237,7 +267,7 @@ About...
                 .text('Kingston');
             boroughsvg.append('text')
                 .attr({
-                    class:'boroughtext',
+                    class:'buttontext',
                     x:425,
                     y:52,
                     'text-anchor':'middle'
@@ -246,13 +276,91 @@ About...
                 .text('Merton');
             boroughsvg.append('text')
                 .attr({
-                    class:'boroughtext',
+                    class:'buttontext',
                     x:595,
                     y:52,
                     'text-anchor':'middle'
                 })
                 .on('click',riMap)
                 .text('Richmond');
+
+            // insert problem buttons
+            var problemsvg = d3.select('body').append('svg')
+                .attr('id','problems');
+            // add rect
+            problemsvg.append('rect')
+                .attr({
+                    class:'problem',
+                    id:'smokingbutton',
+                    x:5,
+                    rx:10,
+                    ry:10
+                })
+                .on('click',smMap);
+            problemsvg.append('rect')
+                .attr({
+                    class:'problem',
+                    id:'overweightbutton',
+                    x:175,
+                    rx:10,
+                    ry:10
+                })
+                .on('click',ovMap);
+            problemsvg.append('rect')
+                .attr({
+                    class:'problem',
+                    id:'alcoholbutton',
+                    x:345,
+                    rx:10,
+                    ry:10
+                })
+                .on('click',alMap);
+            problemsvg.append('rect')
+                .attr({
+                    class:'problem',
+                    id:'inactivitybutton',
+                    x:515,
+                    rx:10,
+                    ry:10
+                })
+                .on('click',inMap);
+            // add text
+            problemsvg.append('text')
+                .attr({
+                    class:'buttontext',
+                    x:85,
+                    y:52,
+                    'text-anchor':'middle'
+                })
+                .on('click',smMap)
+                .text('Smoking');
+            problemsvg.append('text')
+                .attr({
+                    class:'buttontext',
+                    x:255,
+                    y:52,
+                    'text-anchor':'middle'
+                })
+                .on('click',ovMap)
+                .text('Overweight');
+            problemsvg.append('text')
+                .attr({
+                    class:'buttontext',
+                    x:425,
+                    y:52,
+                    'text-anchor':'middle'
+                })
+                .on('click',alMap)
+                .text('Alcohol');
+            problemsvg.append('text')
+                .attr({
+                    class:'buttontext',
+                    x:595,
+                    y:52,
+                    'text-anchor':'middle'
+                })
+                .on('click',inMap)
+                .text('Inactivity');
 
             // insert logo
             d3.select('body').append('img')
@@ -277,10 +385,17 @@ About...
             svgIns.append("text")
                 .attr("id","txtInstruct")
                 .attr("x",10)
-                .attr("y",15)
+                .attr("y",11)
                 .attr("dy",-3)
                 .attr("text-anchor","left")
-                .text("Start by selecting a public health priority from the icons above");
+                .text("Start by selecting a public ");
+            svgIns.append("text")
+                .attr("id","txtInstruct")
+                .attr("x",10)
+                .attr("y",25)
+                .attr("dy",-3)
+                .attr("text-anchor","left")
+                .text("health priority and a borough.");
             svgIns.append("text")
                 .attr("id","txtStats")
 
@@ -314,16 +429,11 @@ About...
             // get numerator and denominator
             num = allnum[pickproblem][pickborough];
             denom = alldenom[pickproblem][pickborough];
-            //create svg element
-            //specify the number of columns and rows for pictogram layout
 
+            //specify the number of columns and rows for pictogram layout
             var numCols = denom>200 ? 20: 10;
             var numRows = 1+Math.floor(denom/numCols);
             var myIndex=d3.range(denom);
-            /*
-            var numCols = 10;
-            var numRows = 7;
-            */
 
             //padding for the grid
             var xPadding = 10;
@@ -362,9 +472,6 @@ About...
                            return "iconPlain";
                        }
                     });
-                //.exit()
-                //.remove();
-  //                  .classed("iconPlain",true);
 
                 d3.selectAll('#txtStats').remove();
                 svgIns.append("text")
@@ -381,17 +488,13 @@ About...
                     .attr("dy",-3)
                     .attr("text-anchor","left")
                     .text("out of "+denom+",000 residents over sixteen.");
-
-
           }
-
 
             // add credits
             d3.select('body').append('p').attr('class','credits')
-                .text("Created by Robert Grant at Kingston University + St George's, University of London");
+                .text("Created by Robert Grant at Kingston University + St George's, University of London (robertgrantstats.co.uk)");
             d3.select('body').append('p').attr('class','credits')
                     .text("Map © OpenStreetMap contributors — pictogram adapted from Alan Smith (bl.ocks.org/alansmithy)");
-
         </script>
     </body>
 </html>
