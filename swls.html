@@ -1,10 +1,7 @@
 <!--
 Public health can... In collaboration with the King's Fund
+change 'smokers' and 'residents over 16'
 RoI text
-Problem buttons  / icons
-Map moves
-Map faded and trimmed
-About...
 -->
 
 
@@ -136,6 +133,17 @@ About...
             // problems in the order: smoking, overweight, alcohol, inactivity
             var allnum = [[48,22,22,17],[182,75,95,73],[20,11,12,12],[164,86,97,102]];
             var alldenom = [[235,111,136,150],[293,136,163,153],[294,137,162,154],[293,137,162,154]];
+            var burdens = [['£32,026,866','£14,753,267','£14,471,613','£11,244,998'],
+                          ['£27,252,115','£11,271,289','£14,138,840','£10,937,160'],
+                          ['£23,158,961','£12,938,180','£13,734,403','£14,044,135'],
+                          ['£7,332,848','£3,845,374','£4,327,354','£4,552,414']];
+            var iconleft = [280,125,260,350];
+            var numname = ['smokers','overweight people',
+                          'heavy drinkers','physically inactive people'];
+            var denomname = ['residents aged 18+',
+                             'residents aged 16+',
+                             'drinking residents aged 16+',
+                             'residents aged 16+'];
             var num=0;
             var denom=0;
             var thisnum = -1;
@@ -425,7 +433,6 @@ About...
             /* ########################################################
                #########  function to draw interactive content ########
                ######################################################## */
-// add Bostock join
 
         var render = function(pickborough,pickproblem) {
 
@@ -433,7 +440,8 @@ About...
 
             var svgDoc=d3.select("div#mapDiv").append("svg")
                 .attr('id','svgDoc')
-                .attr("viewBox","0 0 200 200");
+                .attr("viewBox","0 0 200 200")
+                .style('left',iconleft[thisdenom]);
 
              //define an icon; store it in svg <defs> elements as a reusable component
             svgDoc.append("defs")
@@ -489,26 +497,25 @@ About...
                        }
                     });
 
+                var thisburden = burdens[pickproblem][pickborough];
+                var thisnumname = numname[pickproblem];
+                var thisdenomname = denomname[pickproblem];
                 d3.selectAll('#txtStats').remove();
                 svgIns.append("text")
-                    .attr("id","txtStats")
-                    .attr("x",10)
-                    .attr("y",40)
-                    .attr("dy",-3)
-                    .attr("text-anchor","left")
-                    .text("There are "+num+",000 smokers,");
+                    .attr({"id":"txtStats","x":10,"y":40,"dy":-3,"text-anchor":"left"})
+                    .text("There are "+num+",000 "+thisnumname+",");
                 svgIns.append("text")
-                    .attr("id","txtStats")
-                    .attr("x",10)
-                    .attr("y",54)
-                    .attr("dy",-3)
-                    .attr("text-anchor","left")
-                    .text("out of "+denom+",000 residents over sixteen.");
+                    .attr({"id":"txtStats","x":10,"y":54,"dy":-3,"text-anchor":"left"})
+                    .text("out of "+denom+",000 "+thisdenomname+".");
+                svgIns.append("text")
+                    .attr({"id":"txtStats","x":10,"y":68,"dy":-3,"text-anchor":"left"})
+                    .text("Health burden in the borough: "+thisburden);
+
           }
 
             // add credits
             d3.select('body').append('p').attr('class','credits')
-                .text("Created by Robert Grant at Kingston University + St George's, University of London (robertgrantstats.co.uk)");
+                .text("Created by Robert Grant at Kingston University + St George's, University of London (robertgrantstats.co.uk). Data and analysis by the King's Fund");
             d3.select('body').append('p').attr('class','credits')
                     .text("Map © OpenStreetMap contributors — pictogram adapted from Alan Smith (bl.ocks.org/alansmithy)");
         </script>
